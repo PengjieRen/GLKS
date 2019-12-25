@@ -3,7 +3,7 @@ Knowledge Selection for Background Based Conversation".
 
 1. Download data from "https://github.com/nikitacs16/Holl-E" and use "Prepare_holl.py" to prepare the dataset.
 
-2. Config the path and run "Run_GLKS.py".
+2. Config the path and run "python -m torch.distributed.launch --nproc_per_node=num_GPU Run_GLKS.py --mode='train'".
 
 Please cite our paper if you use the code:
 
