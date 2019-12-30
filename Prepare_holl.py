@@ -4,7 +4,9 @@ import nltk
 from Rouge import *
 nltk.download('all')
 
-root=r'holl'
+input_file=r'holl\raw_data-20190221T150829Z-001\raw_data\train_data.json'
+version='oracle_reduced'
+output_file=r'holl\holl-train.oracle.json'
 with codecs.open(root+r'\raw_data-20190221T150829Z-001\raw_data\train_data.json', encoding='utf-8') as f:
     data = json.load(f)
     print(len(data))
@@ -112,7 +114,7 @@ with codecs.open(root+r'\raw_data-20190221T150829Z-001\raw_data\train_data.json'
         new_sample['rouge_1_p'] = rouge_1_ps
         new_sample['rouge_1_r'] = rouge_1_rs
 
-        background = nltk.word_tokenize(sample['oracle_reduced'])#change here to other background length
+        background = nltk.word_tokenize(sample[version])#change here to other background length
         new_sample['unstructured_knowledge'] = ' '.join(background)
         span=span.split(' ')
         if len(span) > 0:
@@ -151,6 +153,6 @@ with codecs.open(root+r'\raw_data-20190221T150829Z-001\raw_data\train_data.json'
         new_data.append(new_sample)
 
 print(len(new_data))
-file = codecs.open(root+r'-train.oracle.json', "w", "utf-8")
+file = codecs.open(output_file, "w", "utf-8")
 file.write(json.dumps(new_data))
 file.close()

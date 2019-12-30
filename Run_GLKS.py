@@ -6,7 +6,8 @@ import torch.backends.cudnn as cudnn
 import argparse
 import os
 
-base_output_path = 'GLKS/holl.256/'
+version='oracle'
+base_output_path = 'GLKS/holl.'+version+'/'
 data_path = 'holl/'
 embedding_size = 300
 hidden_size = 256
@@ -32,16 +33,16 @@ def train(args):
 
     output_path=data_path+base_output_path
 
-    vocab2id, id2vocab, id2freq = load_vocab(data_path + 'holl_input_output.256.vocab', t=min_vocab_freq)
+    vocab2id, id2vocab, id2freq = load_vocab(data_path + 'holl_input_output.'+version+'.vocab', t=min_vocab_freq)
 
     if not os.path.exists(data_path+'glove.6B.300d.txt'+'.dat'):
         prepare_embeddings(data_path+'glove.6B.300d.txt')
     emb_matrix=load_embeddings(data_path+'glove.6B.300d.txt', id2vocab, embedding_size)
 
-    if os.path.exists(data_path + 'holl-train.256.pkl'):
-        train_dataset = torch.load(data_path + 'holl-train.256.pkl')
+    if os.path.exists(data_path + 'holl-train.'+version+'.pkl'):
+        train_dataset = torch.load(data_path + 'holl-train.'+version+'.pkl')
     else:
-        train_dataset = GLKSDataset([data_path + 'holl-train.256.json'], vocab2id, min_window_size, num_windows, knowledge_len)
+        train_dataset = GLKSDataset([data_path + 'holl-train.'+version+'.json'], vocab2id, min_window_size, num_windows, knowledge_len)
 
     model = GLKS(min_window_size, num_windows, embedding_size, hidden_size, vocab2id, id2vocab, max_dec_len=70, beam_width=1, emb_matrix=emb_matrix)
     init_params(model, escape='embedding')
@@ -73,25 +74,16 @@ def test(args):
 
     output_path = data_path + base_output_path
 
-    vocab2id, id2vocab, id2freq = load_vocab(data_path + 'holl_input_output.256.vocab', t=min_vocab_freq)
+    vocab2id, id2vocab, id2freq = load_vocab(data_path + 'holl_input_output.'+version+'.vocab', t=min_vocab_freq)
 
-    if os.path.exists(data_path + 'holl-dev.256.pkl'):
-        dev_dataset = torch.load(data_path + 'holl-dev.256.pkl')
+    if os.path.exists(data_path + 'holl-dev.'+version+'.pkl'):
+        dev_dataset = torch.load(data_path + 'holl-dev.'+version+'.pkl')
     else:
-        dev_dataset = GLKSDataset([data_path + 'holl-dev.256.json'], vocab2id, min_window_size, num_windows, knowledge_len)
-    if os.path.exists(data_path + 'holl-test-mf.256.pkl'):
-        mul_test_dataset = torch.load(data_path + 'holl-test-mf.256.pkl')
+        dev_dataset = GLKSDataset([data_path + 'holl-dev.'+version+'.json'], vocab2id, min_window_size, num_windows, knowledge_len)
+    if os.path.exists(data_path + 'holl-test.'+version+'.pkl'):
+        test_dataset = torch.load(data_path + 'holl-test.'+version+'.pkl')
     else:
-        mul_test_dataset = GLKSDataset([data_path + 'holl-test-mf.256.json'], vocab2id, min_window_size, num_windows, knowledge_len)
-    if os.path.exists(data_path + 'holl-test.256.pkl'):
-        test_dataset = torch.load(data_path + 'holl-test.256.pkl')
-    else:
-        test_dataset = GLKSDataset([data_path + 'holl-test.256.json'], vocab2id, min_window_size, num_windows, knowledge_len)
-
-    # model = GLG(300, 256, vocab2id, id2vocab, max_dec_len=70, beam_width=1)
-    # model.load_state_dict(torch.load('9.pkl', map_location='cpu'))
-    # trainer = DefaultTrainer(model, None)
-    # trainer.test('test', dev_dataset, layer_collate_fn, batch_size, 0, output_path=output_path)
+        test_dataset = GLKSDataset([data_path + 'holl-test.'+version+'.json'], vocab2id, min_window_size, num_windows, knowledge_len)
 
     for i in range(20):
         print('epoch', i)
@@ -103,7 +95,6 @@ def test(args):
             trainer = DefaultTrainer(model, None)
             trainer.test('test', dev_dataset, collate_fn, batch_size, i, output_path=output_path)
             trainer.test('test', test_dataset, collate_fn, batch_size, 100 + i, output_path=output_path)
-            trainer.test('test', mul_test_dataset, collate_fn, batch_size, 1000 + i, output_path=output_path)
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
