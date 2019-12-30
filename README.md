@@ -11,7 +11,7 @@ Knowledge Selection for Background Based Conversation".
 
 (4) Make a vocabulary file based on the training set of different versions in the format: "token \t token_frequency".
 
-2. Change the configurations in "Run_GLKS.py" and run "python -m torch.distributed.launch --nproc_per_node=num_GPU Run_GLKS.py --mode='train/test'" to train or test models on different .
+2. Change the configurations in "Run_GLKS.py" and run "python -m torch.distributed.launch --nproc_per_node=num_GPU Run_GLKS.py --mode='train/test'" to train or test models on different dataset versions.
 
 Please cite our paper if you use the code:
 
