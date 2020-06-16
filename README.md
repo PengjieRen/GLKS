@@ -15,16 +15,16 @@ Knowledge Selection for Background Based Conversation".
 
 ## 2. Change the configurations in "Run_GLKS.py" and run "python -m torch.distributed.launch --nproc_per_node=num_GPU Run_GLKS.py --mode='train/test'" to train or test models on different dataset versions.
 
-+ Please cite our paper if you use the code:
+Please cite our paper if you use the code:
 
-+ @inproceedings{ren-2020-thinking,
+@inproceedings{ren-2020-thinking,
 
-+ Author = {Ren, Pengjie and Chen, Zhumin and Monz, Christof and Ma, Jun and de Rijke, Maarten},
+Author = {Ren, Pengjie and Chen, Zhumin and Monz, Christof and Ma, Jun and de Rijke, Maarten},
 
-+ Booktitle = {The 34th AAAI Conference on Artificial Intelligence},
+Booktitle = {The 34th AAAI Conference on Artificial Intelligence},
 
-+ Title = {Thinking Globally, Acting Locally: Distantly supervised global-to-local knowledge selection for background based conversation},
+Title = {Thinking Globally, Acting Locally: Distantly supervised global-to-local knowledge selection for background based conversation},
 
-+ Year = {2020}}
+Year = {2020}}
 
 
